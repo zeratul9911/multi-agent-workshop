@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/guard.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write(**/*.{ts,tsx})",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bunx biome format --write {file_path} 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
