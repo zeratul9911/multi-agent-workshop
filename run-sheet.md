@@ -37,9 +37,9 @@ Parallel Safety = Isolation × Context × Guards
 ### 2.1 Create the playground
 
 ```bash
-cp -r .context/workshop/playground ~/workshop-demo
+git clone https://github.com/zeratul9911/multi-agent-workshop.git ~/workshop-demo
 cd ~/workshop-demo
-git init && git add -A && git commit -m "chore: initial scaffold"
+
 bun install
 ```
 

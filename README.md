@@ -2,16 +2,14 @@
 
 How to structure a codebase so multiple AI agents (and humans) can work on it simultaneously without stepping on each other.
 
-**Source project**: Temper (this repo) — a monorepo that routinely runs 5+ agents in parallel across different packages, stacks, and concerns.
-
 ## Workshop Materials
 
 | File | What It Covers |
 |------|---------------|
 | [why-it-works.md](./why-it-works.md) | The 7 architectural patterns that enable parallel agent work |
-| [anatomy.md](./anatomy.md) | Annotated tour of this repo's agent infrastructure |
+| [anatomy.md](./anatomy.md) | Annotated tour of the agent infrastructure |
 | [exercises.md](./exercises.md) | Hands-on exercises for the workshop |
-| [playground/](./playground/) | Minimal scaffold to bootstrap a new multi-agent-ready project |
+| [run-sheet.md](./run-sheet.md) | Step-by-step presenter script with copy-paste prompts |
 
 ## Core Thesis
 
@@ -27,9 +25,31 @@ The difference: agents benefit from these patterns *more* than humans because th
 ## Quick Start
 
 ```bash
-# To try the playground scaffold:
-cp -r .context/workshop/playground ~/my-workshop-project
-cd ~/my-workshop-project
+git clone https://github.com/zeratul9911/multi-agent-workshop.git
+cd multi-agent-workshop
 bun install
-# Open in Conductor — each workspace gets its own agent
+bun run build
+bun run dev:api   # starts on port 3000
+```
+
+Open in Conductor — each workspace gets its own agent and port.
+
+## Structure
+
+```
+CLAUDE.md                        ← root agent instructions
+conductor.json                   ← multi-worktree port isolation
+.claude/
+├── settings.json                ← format-on-write + guard hooks
+├── hooks/guard.sh               ← blocks dangerous ops
+├── agents/general-agent-opus.md ← default subagent
+└── skills/
+    ├── plan/                    ← 3 parallel subagents for planning
+    ├── review/                  ← 3 parallel subagents for review
+    ├── simplify/                ← pre-PR cleanup
+    └── pull-request/            ← create PR + offer review
+packages/
+├── api/                         ← Hono API (own CLAUDE.md)
+├── ui/                          ← React frontend (own CLAUDE.md)
+└── shared/                      ← Shared Zod schemas
 ```
